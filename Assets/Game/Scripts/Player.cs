@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -22,39 +23,81 @@ public class Player : MonoBehaviour
 
     public float UpdatedAlchol;
 
+    public bool drink = false;
+
+
+    private PlayerInput _intput;
+
+    private void Awake()
+    {
+       _intput = new PlayerInput();
+
+
+    }
+
+    private void OnEnable()
+    {
+        _intput.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _intput.Disable();
+    }
 
     private void Start()
     {
-        this.IntoxicationIncreasedPerSecond = 5f;
+        _intput.GameControls.Drink.performed += ctx => Drink(ctx);
 
-        this.AlcholIncreasedPerSecond = -1f;
+        IntoxicationIncreasedPerSecond = -20f;
 
-        this.MaxIntoxication = 1000;
+        AlcholIncreasedPerSecond = 0f;
 
-        this.MaxAlchol = 1000;
+        MaxIntoxication = 1000;
+
+        MaxAlchol = 1000;
+    }
+
+    private void OnDestroy()
+    { 
+        _intput.GameControls.Drink.performed -= ctx => Drink(ctx);
+    }
+
+    private void Drink(InputAction.CallbackContext ctx)
+    {
+
+        if (this.drink)
+        {
+            return;
+        }
+        drink = true;
+
+        UpdatedAlchol -= 75f;
+        UpdatedIntoxication += 35f;
+        Debug.Log("MMMMM");
     }
 
     private void Update()
     {
-        this.UpdatedIntoxication += this.IntoxicationIncreasedPerSecond * Time.deltaTime;
+        UpdatedIntoxication += IntoxicationIncreasedPerSecond * Time.deltaTime;
 
-        this.Intoxication.fillAmount = this.UpdatedIntoxication / this.MaxIntoxication;  
+        Intoxication.fillAmount = UpdatedIntoxication / MaxIntoxication;  
 
-        this.UpdatedAlchol += this.AlcholIncreasedPerSecond * Time.deltaTime;
+        UpdatedAlchol += AlcholIncreasedPerSecond * Time.deltaTime;
 
-        this.Alchol.fillAmount = this.UpdatedAlchol / this.MaxAlchol;
+        Alchol.fillAmount = UpdatedAlchol / MaxAlchol;
 
 
-        if (this.UpdatedIntoxication >= this.MaxIntoxication)
+        if (UpdatedIntoxication >= MaxIntoxication)
         {
-            this.UpdatedIntoxication = this.MaxIntoxication;
+            UpdatedIntoxication = MaxIntoxication;
         }
 
 
 
-        if (this.UpdatedAlchol >= this.MaxAlchol)
+        if (UpdatedAlchol >= MaxAlchol)
         {
-            this.UpdatedAlchol = this.MaxAlchol;
+            UpdatedAlchol = MaxAlchol;
         }
     }
 }

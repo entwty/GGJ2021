@@ -33,6 +33,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Drink"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""b9a1498a-4c52-4b5f-afeb-e1e8ecffac06"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -101,16 +109,45 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Interaction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c2835ff8-6ea4-40f2-90f9-5f686af966a5"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Drink"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""KeyboardMouse"",
+            ""bindingGroup"": ""KeyboardMouse"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // Game Controls
         m_GameControls = asset.FindActionMap("Game Controls", throwIfNotFound: true);
         m_GameControls_Movement = m_GameControls.FindAction("Movement", throwIfNotFound: true);
         m_GameControls_Interaction = m_GameControls.FindAction("Interaction", throwIfNotFound: true);
+        m_GameControls_Drink = m_GameControls.FindAction("Drink", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -162,12 +199,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private IGameControlsActions m_GameControlsActionsCallbackInterface;
     private readonly InputAction m_GameControls_Movement;
     private readonly InputAction m_GameControls_Interaction;
+    private readonly InputAction m_GameControls_Drink;
     public struct GameControlsActions
     {
         private @PlayerInput m_Wrapper;
         public GameControlsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_GameControls_Movement;
         public InputAction @Interaction => m_Wrapper.m_GameControls_Interaction;
+        public InputAction @Drink => m_Wrapper.m_GameControls_Drink;
         public InputActionMap Get() { return m_Wrapper.m_GameControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -183,6 +222,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Interaction.started -= m_Wrapper.m_GameControlsActionsCallbackInterface.OnInteraction;
                 @Interaction.performed -= m_Wrapper.m_GameControlsActionsCallbackInterface.OnInteraction;
                 @Interaction.canceled -= m_Wrapper.m_GameControlsActionsCallbackInterface.OnInteraction;
+                @Drink.started -= m_Wrapper.m_GameControlsActionsCallbackInterface.OnDrink;
+                @Drink.performed -= m_Wrapper.m_GameControlsActionsCallbackInterface.OnDrink;
+                @Drink.canceled -= m_Wrapper.m_GameControlsActionsCallbackInterface.OnDrink;
             }
             m_Wrapper.m_GameControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -193,13 +235,26 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Interaction.started += instance.OnInteraction;
                 @Interaction.performed += instance.OnInteraction;
                 @Interaction.canceled += instance.OnInteraction;
+                @Drink.started += instance.OnDrink;
+                @Drink.performed += instance.OnDrink;
+                @Drink.canceled += instance.OnDrink;
             }
         }
     }
     public GameControlsActions @GameControls => new GameControlsActions(this);
+    private int m_KeyboardMouseSchemeIndex = -1;
+    public InputControlScheme KeyboardMouseScheme
+    {
+        get
+        {
+            if (m_KeyboardMouseSchemeIndex == -1) m_KeyboardMouseSchemeIndex = asset.FindControlSchemeIndex("KeyboardMouse");
+            return asset.controlSchemes[m_KeyboardMouseSchemeIndex];
+        }
+    }
     public interface IGameControlsActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
+        void OnDrink(InputAction.CallbackContext context);
     }
 }
