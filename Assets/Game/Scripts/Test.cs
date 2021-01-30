@@ -8,6 +8,19 @@ namespace Game.Scripts
     {
         private PlayerInput _input;
 
+        private Vector2 movementInput;
+
+        [SerializeField]
+        private float moveSpeed = 10f;
+
+        private Vector3 inputDirection;
+
+        private Vector3 moveVector;
+
+        private Quaternion currentRotation;
+
+
+
         private void Awake()
         {
             if (_input == null)
@@ -15,25 +28,65 @@ namespace Game.Scripts
                 _input = new PlayerInput();
             }
 
-            _input.GameControls.Interaction.performed += InteractionOnperformed;
-            _input.GameControls.Movement.performed+= MovementPerformed;
-            _input.Enable();
+            this._input.GameControls.Movement.performed += context => this.movementInput = context.ReadValue<Vector2>();
+
+
         }
 
-        private void MovementPerformed(InputAction.CallbackContext obj)
+        private void FixedUpdate()
         {
-           Debug.Log(obj.ReadValue<Vector2>());
+       
+            float h = this.movementInput.x;
+
+            float v = this.movementInput.y;
+
+            Vector3 targetInput = new Vector3(h, 0, v);
+
+            this.inputDirection = Vector3.Lerp(this.inputDirection, targetInput, Time.deltaTime * 10f);
+
+            Vector3 camForward = Camera.main.transform.forward;
+
+            Vector3 camRight = Camera.main.transform.right;
+
+            camForward.y = 0f;
+
+            camRight.y = 0f;
+
+            Vector3 desiredDirection = camForward * this.inputDirection.z + camRight * this.inputDirection.x;
+
+            Move(desiredDirection);
+            Turn(desiredDirection);
         }
 
-        private void OnDestroy()
+        private void Move(Vector3 desiredDirection)
         {
-            _input.GameControls.Interaction.performed -= InteractionOnperformed;
-            _input.GameControls.Movement.performed-= MovementPerformed;
+            this.moveVector.Set(desiredDirection.x,0f,desiredDirection.z);
+            this.moveVector = this.moveVector * this.moveSpeed * Time.deltaTime;
+            transform.position += this.moveVector;
         }
 
-        private void InteractionOnperformed(InputAction.CallbackContext obj)
+        private void Turn(Vector3 desiredDirection)
         {
-            Debug.Log("Interaction");
+            if ((desiredDirection.x > 0.1 || desiredDirection.x < -0.1 || (desiredDirection.z > 0.1 || desiredDirection.z < -0.1)))
+            {
+                this.currentRotation = Quaternion.LookRotation(desiredDirection);
+                transform.rotation = this.currentRotation;
+            }
+            else
+            {
+                transform.rotation = this.currentRotation;
+            }
+        }
+
+        private void OnEnable()
+        {
+            this._input.GameControls.Enable();
+        }
+
+        private void OnDisable()
+        {
+            this._input.GameControls.Enable();
+
         }
     }
 }
