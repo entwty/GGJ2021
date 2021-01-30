@@ -16,11 +16,11 @@ namespace Game.Scripts
             }
 
             _input.GameControls.Interaction.performed += InteractionOnperformed;
-            _input.GameControls.Movement.performed+= MovementOnperformed;
+            _input.GameControls.Movement.performed+= MovementPerformed;
             _input.Enable();
         }
 
-        private void MovementOnperformed(InputAction.CallbackContext obj)
+        private void MovementPerformed(InputAction.CallbackContext obj)
         {
            Debug.Log(obj.ReadValue<Vector2>());
         }
@@ -28,7 +28,7 @@ namespace Game.Scripts
         private void OnDestroy()
         {
             _input.GameControls.Interaction.performed -= InteractionOnperformed;
-            _input.GameControls.Movement.performed-= MovementOnperformed;
+            _input.GameControls.Movement.performed-= MovementPerformed;
         }
 
         private void InteractionOnperformed(InputAction.CallbackContext obj)
