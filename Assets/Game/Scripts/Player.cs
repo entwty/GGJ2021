@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
 
     public bool drink = false;
 
+    Animator animator;
 
     private PlayerInput _intput;
 
@@ -47,6 +48,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+
+        animator = this.GetComponent<Animator>();
         _intput.GameControls.Drink.performed += ctx => Drink(ctx);
 
         IntoxicationIncreasedPerSecond = -20f;
@@ -68,10 +71,12 @@ public class Player : MonoBehaviour
 
         if (this.drink)
         {
+            drink = false;
             return;
         }
         drink = true;
-
+        animator.SetTrigger("Isdrink");
+  
         UpdatedAlchol -= 75f;
         UpdatedIntoxication += 35f;
         Debug.Log("MMMMM");
