@@ -15,6 +15,20 @@ public class TPSMovement : MonoBehaviour
 
     float turnSmoothVelocity;
 
+    private Animator animator;
+
+    public int iswalkingHash;
+
+    CharacterController controller;
+
+    private void Start()
+    {
+        controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+
+        iswalkingHash = Animator.StringToHash("Iswalking");
+    }
+
     private void Update()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -36,7 +50,11 @@ public class TPSMovement : MonoBehaviour
 
             this.characterController.Move(moveDir.normalized * this.speed * Time.deltaTime);
 
-
+            animator.SetBool("Iswalking",true);
+        }
+        else
+        {
+            animator.SetBool("Iswalking",false);
         }
     }
 }
