@@ -287,11 +287,11 @@ RectTransform:
   m_Father: {fileID: 421163521}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 543.4472, y: 530.89685}
+  m_Pivot: {x: 0, y: 1}
 --- !u!1 &133219897
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,7 +478,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -910, y: 490}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &400516568
@@ -587,6 +587,7 @@ GameObject:
   - component: {fileID: 421163520}
   - component: {fileID: 421163519}
   - component: {fileID: 421163518}
+  - component: {fileID: 421163522}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -623,10 +624,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -674,6 +675,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &421163522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 421163517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a8f6d1559147949afbf0e8275ef60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _intoxication: {fileID: 589691019}
+  _alchol: {fileID: 1370180417}
 --- !u!1 &589691017
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,7 +751,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 1
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -782,7 +797,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -910, y: 416.20993}
+  m_AnchoredPosition: {x: 0, y: -274}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &705507993
@@ -1248,7 +1263,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1370180416
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1292,7 +1307,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1329,15 +1344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef0ed7a1fc97a5445a01f67d5197f9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxIntoxication: 0
-  MaxAlchol: 0
-  Intoxication: {fileID: 589691019}
-  Alchol: {fileID: 1370180417}
-  IntoxicationIncreasedPerSecond: 0
-  AlcholIncreasedPerSecond: 0
-  UpdatedIntoxication: 1000
-  UpdatedAlchol: 1000
-  drink: 0
 --- !u!114 &1693818585
 MonoBehaviour:
   m_ObjectHideFlags: 0
