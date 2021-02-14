@@ -10,8 +10,12 @@ namespace Game.Scripts.Behaviours
 
         [SerializeField] private float _maxAlchol = 1000f;
         
-        [SerializeField] private float _intoxicationIncrease = -20f;
-        
+        [SerializeField] private float _intoxicationDecreaseAmount = -20f;
+
+
+        [SerializeField] private float _drinkingIntoxicationAmount = 35f;
+
+        [SerializeField] private float _drinkingAlcholCost = 75f;
         [SerializeField] private PlayerUIElement _playerUIElement;
         
         
@@ -29,15 +33,15 @@ namespace Game.Scripts.Behaviours
 
         public void Drink()
         {
-            _currentAlcholInBottle -= 75f;
-            _currentIntoxication += 35f;
+            _currentAlcholInBottle -= _drinkingAlcholCost;
+            _currentIntoxication += _drinkingIntoxicationAmount;
             
             _playerUIElement.UpdateAlchol(_currentAlcholInBottle);
         }
 
         private void Update()
         {
-            _currentIntoxication += _intoxicationIncrease * Time.deltaTime;
+            _currentIntoxication += _intoxicationDecreaseAmount * Time.deltaTime;
 
             var intoxicationAmount = _currentIntoxication / _maxIntoxication;
             

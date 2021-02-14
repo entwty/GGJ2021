@@ -17,7 +17,7 @@ public class TPSMovement : MonoBehaviour
 
     private Animator animator;
 
-    public int iswalkingHash;
+    public int isWalkingHash;
 
     CharacterController controller;
 
@@ -26,7 +26,7 @@ public class TPSMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 
-        iswalkingHash = Animator.StringToHash("Iswalking");
+        isWalkingHash = Animator.StringToHash("Iswalking");
     }
 
     private void Update()
@@ -40,21 +40,21 @@ public class TPSMovement : MonoBehaviour
         if (direction.magnitude >= 0.1f)
         {
 
-            float targetAngel = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + this.cam.eulerAngles.y;
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
 
-            float angel = Mathf.SmoothDampAngle(transform.eulerAngles.y,targetAngel,ref this.turnSmoothVelocity,turnSmoothTime);
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,targetAngle,ref turnSmoothVelocity,turnSmoothTime);
 
-            transform.rotation = Quaternion.Euler(0f, angel, 0f);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngel, 0f) * Vector3.forward;
+            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
             this.characterController.Move(moveDir.normalized * this.speed * Time.deltaTime);
 
-            animator.SetBool("Iswalking",true);
+            animator.SetBool(isWalkingHash,true);
         }
         else
         {
-            animator.SetBool("Iswalking",false);
+            animator.SetBool(isWalkingHash,false);
         }
     }
 }
